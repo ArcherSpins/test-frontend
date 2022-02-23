@@ -19,7 +19,7 @@ const SummaryStep: React.FC<SummaryStepProps> = (props) => {
     ));
   };
 
-  const cleanStore = () => {
+  const cleanUserData = () => {
     setUser(DefaultUser);
   };
 
@@ -27,7 +27,7 @@ const SummaryStep: React.FC<SummaryStepProps> = (props) => {
     <>
       {renderFields()}
       <div>
-        <Link onClick={cleanStore} to="/purchased=dev_ins">
+        <Link onClick={cleanUserData} to="/purchased=dev_ins">
           Purchase
         </Link>
       </div>
