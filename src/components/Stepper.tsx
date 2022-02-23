@@ -1,4 +1,4 @@
-import React, { FormEvent, useCallback, useState } from "react";
+import React, { FormEvent, useCallback } from "react";
 import { FieldComponent, FieldComponentProps } from "./FieldComponent";
 
 export interface ComponentType {
@@ -17,32 +17,27 @@ export interface StepperProps {
   steps: {
     [key: string]: ComponentType;
   };
-  defaultStep?: string;
+  step: string;
+  hasNextStep?: boolean;
   validators?: {
     [key: string]: boolean;
   };
-  handleNext?: (nextStep: string) => void;
+  handleNext?: () => void;
 }
 
 export const Stepper: React.FC<StepperProps> = ({
   steps,
-  defaultStep,
+  step,
   validators,
-  handleNext
+  handleNext,
+  hasNextStep
 }) => {
-  const [step, setStep] = useState(
-    defaultStep || steps[Object.keys(steps)[0]]?.stepKey
-  );
-
   const handleChangeStep = useCallback(
-    (nextStep: string) => {
-      return (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        setStep(nextStep);
-        if (handleNext) handleNext(nextStep);
-      };
+    (e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      if (handleNext) handleNext();
     },
-    [setStep, handleNext]
+    [handleNext]
   );
 
   const getStep = useCallback(() => {
@@ -65,17 +60,10 @@ export const Stepper: React.FC<StepperProps> = ({
     const step = getStep();
 
     if (step) {
-      const stepsArr = Object.values(steps);
-
-      const nextStep =
-        stepsArr[
-          stepsArr.findIndex((item) => item.stepKey === step.stepKey) + 1
-        ];
-
       return (
-        <form onSubmit={handleChangeStep(nextStep?.stepKey)}>
+        <form onSubmit={handleChangeStep}>
           {renderStep(step)}
-          {nextStep && (
+          {hasNextStep && (
             <button
               type="submit"
               disabled={validators && !validators[step.stepKey]}
@@ -88,7 +76,7 @@ export const Stepper: React.FC<StepperProps> = ({
     }
 
     return null;
-  }, [getStep, steps, validators, handleChangeStep]);
+  }, [getStep, validators, hasNextStep, handleChangeStep]);
 
   return render();
 };
