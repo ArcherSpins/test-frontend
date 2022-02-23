@@ -91,7 +91,7 @@ const Buyflow: React.FC<BuyflowProps> = (props) => {
   return (
     <>
       <h4>Buying {PRODUCT_IDS_TO_NAMES[props.productId]}</h4>
-      {step && <Stepper hasNextStep={Boolean(getNextStep())} validators={getValidators()} handleNext={onNextStep} step={step} steps={getSteps()} />}
+      {step && <Stepper showNextButton={Boolean(getNextStep())} validators={getValidators()} handleNext={onNextStep} step={step} steps={getSteps()} />}
     </>
   );
 };
