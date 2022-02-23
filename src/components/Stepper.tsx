@@ -18,7 +18,7 @@ export interface StepperProps {
     [key: string]: ComponentType;
   };
   step: string;
-  hasNextStep?: boolean;
+  showNextButton?: boolean;
   validators?: {
     [key: string]: boolean;
   };
@@ -30,7 +30,7 @@ export const Stepper: React.FC<StepperProps> = ({
   step,
   validators,
   handleNext,
-  hasNextStep
+  showNextButton
 }) => {
   const handleChangeStep = useCallback(
     (e: FormEvent<HTMLFormElement>) => {
@@ -63,7 +63,7 @@ export const Stepper: React.FC<StepperProps> = ({
       return (
         <form onSubmit={handleChangeStep}>
           {renderStep(step)}
-          {hasNextStep && (
+          {showNextButton && (
             <button
               type="submit"
               disabled={validators && !validators[step.stepKey]}
@@ -76,7 +76,7 @@ export const Stepper: React.FC<StepperProps> = ({
     }
 
     return null;
-  }, [getStep, validators, hasNextStep, handleChangeStep]);
+  }, [getStep, validators, showNextButton, handleChangeStep]);
 
   return render();
 };
